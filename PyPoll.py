@@ -11,6 +11,11 @@ total_votes = 0
 candidate_options = []
 #add empty dictionary 
 candidate_votes ={}
+#winning candidate and count tracker 
+winning_count = 0
+winning_percent = 0
+winning_candidate =""
+
 #Open the election results and read the file
 with open(file_to_load) as election_data:
     #To do: read and analyze the election
@@ -30,7 +35,23 @@ with open(file_to_load) as election_data:
             candidate_votes[candidate_name] = 0
             #start counting votes    
         candidate_votes[candidate_name] +=1
-            
-    
-    #print vote count
-    print(candidate_votes)
+
+    # 1. Iterate through the candidate list.
+    for candidate_name in candidate_votes:
+        #get vote count of each candidiate
+        votes = candidate_votes[candidate_name]  
+        #calculate the votes
+        vote_percentage = float(votes) / float(total_votes) * 100
+        print(f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
+        #determine winning candidate
+        if (votes > winning_count) and (vote_percentage > winning_percent):
+            winning_count = votes
+            winning_percent = vote_percentage
+            winning_candidate = candidate_name
+    winning_candidate_summary = (
+        f"-------------------------\n"
+    f"Winner: {winning_candidate}\n"
+    f"Winning Vote Count: {winning_count:,}\n"
+    f"Winning Percentage: {winning_percent:.1f}%\n"
+    f"-------------------------\n")
+    print(winning_candidate_summary)
